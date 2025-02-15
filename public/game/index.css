@@ -1,0 +1,95 @@
+/* 414px × 896px */
+
+html,
+body {
+  font-family: "Arial";
+  height: 100%;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.image {
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+}
+
+#year-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.swiper {
+  border: 1px solid red;
+  width: 100%;
+  height: 300px;
+}
+
+.swiper-slide {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10rem;
+}
+
+#game {
+  position: relative;
+  overflow: auto;
+  height: 70%;
+}
+
+#game_container {
+  width: 1000px;
+}
+
+.chap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#chap_1 .overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100000;
+  background-color: #000000;
+  color: #fff;
+}
+
+#player {
+  height: 30%;
+}
+
+#chap2_tree {
+  background-image: url("images/chap2_tree.jpg");
+  width: 100px;
+  height: 150px; /* *1.5 */
+  bottom: 100px;
+  left: 100px;
+  position: absolute;
+}
+
+#chap2_house {
+  background-image: url("images/chap2_house.jpg");
+  width: 500px;
+  height: 330px; /* /1.5 */
+  bottom: 200px;
+  left: 200px;
+}
+
+#chap2_pond {
+  background-image: url("images/pond.jpg");
+  width: 300px;
+  height: 200px; /* *1.5 */
+  bottom: 50px;
+  right: 50px;
+}
