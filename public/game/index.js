@@ -136,11 +136,11 @@ function initVar() {
         message:
           "Ba tháng là quá đủ để chúng ta có thể hiểu nhau và yêu nhau. Mặc dù anh trông thật 'Xấu', nhưng em vẫn yêu anh.",
       },
-      // {
-      //   status: 1,
-      //   key: 6,
-      //   message: "",
-      // },
+      {
+        status: 1,
+        key: 6,
+        message: "",
+      },
       {
         status: 0,
         key: 1,
