@@ -73,6 +73,7 @@ $chap = {
     $(".chap").hide();
     $("#chap8").show();
     $g.current = "chap8";
+    $("#chap8_message").empty();
     for (let i in $g.pass) {
       $("#chap8_message").append(
         `<p> * Thông điệp ${+i + 1}: ${
