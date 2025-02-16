@@ -174,7 +174,6 @@ function initVar() {
 }
 
 function buildItemBar() {
-  $("#item_bar").empty();
   for (let i in $g.items) {
     if ($g.items[i]) {
       const htmlContent = $(`#${i}`).clone();
