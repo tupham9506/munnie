@@ -9,10 +9,32 @@ body {
   padding: 0;
 }
 
+.button {
+  width: 100%;
+}
+
 .image {
   background-size: contain;
   background-repeat: no-repeat;
   position: absolute;
+}
+
+.dialog {
+  display: none;
+}
+
+.item {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #000000;
+}
+
+.selected_item {
+  border: 2px inset blue;
+}
+
+.d-none {
+  display: none;
 }
 
 #year-container {
@@ -23,7 +45,7 @@ body {
 .swiper {
   border: 1px solid red;
   width: 100%;
-  height: 300px;
+  height: 100px;
 }
 
 .swiper-slide {
@@ -32,7 +54,23 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 10rem;
+  font-size: 50px;
+}
+
+#item_bar {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+#year_label {
+  background-color: #ffce00;
+  width: 100px;
+  padding: 5px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
 }
 
 #game {
@@ -43,12 +81,30 @@ body {
 
 #game_container {
   width: 1000px;
+  height: 800px;
+  position: relative;
+}
+
+#home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background-color: #000000;
+  color: #fff;
 }
 
 .chap {
   position: relative;
   width: 100%;
   height: 100%;
+  display: none;
+  background-color: #fff;
 }
 
 #chap_1 .overlay {
@@ -60,7 +116,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 100000;
+  z-index: 10;
   background-color: #000000;
   color: #fff;
 }
@@ -80,16 +136,136 @@ body {
 
 #chap2_house {
   background-image: url("images/chap2_house.jpg");
-  width: 500px;
-  height: 330px; /* /1.5 */
+  width: 375px;
+  height: 250px; /* /1.5 */
   bottom: 200px;
-  left: 200px;
+  left: 300px;
 }
 
 #chap2_pond {
   background-image: url("images/pond.jpg");
-  width: 300px;
-  height: 200px; /* *1.5 */
+  width: 200px;
+  height: 133px; /* *1.5 */
   bottom: 50px;
   right: 50px;
+}
+
+#item_water_can {
+  background-image: url("images/water_can.jpg");
+}
+
+#chap3_tree {
+  background-image: url("images/chap3_tree.jpg");
+  width: 180px;
+  height: 300px; /* *1.5 */
+  bottom: 100px;
+  left: 100px;
+  position: absolute;
+  z-index: 10;
+  display: none;
+}
+
+#chap4_tree {
+  background-image: url("images/chap3_tree.jpg");
+  width: 180px;
+  height: 300px; /* *1.5 */
+  bottom: 100px;
+  left: 100px;
+  position: absolute;
+  z-index: 10;
+}
+
+#cloud_1 {
+  background-image: url("images/cloud_1.jpg");
+  width: 200px;
+  height: 110px; /* *1.5 */
+  top: 20px;
+  left: 100px;
+}
+
+#cloud_2 {
+  background-image: url("images/cloud_1.jpg");
+  width: 180px;
+  height: 100px; /* *1.5 */
+  top: 50px;
+  right: 0px;
+  z-index: 1;
+}
+
+#sun {
+  background-image: url("images/sun.jpg");
+  width: 50px;
+  height: 50px; /* *1.5 */
+  top: 50px;
+  right: 50px;
+}
+
+#pond {
+  background-image: url("images/pond.jpg");
+  width: 200px;
+  height: 133px; /* *1.5 */
+  bottom: 50px;
+  right: 50px;
+}
+
+#pass_4 {
+  background-image: url("images/pass_4.png");
+  width: 50px;
+  height: 50px;
+  bottom: 50px;
+  right: 100px;
+  z-index: 10;
+  display: none;
+}
+
+/* Chap 5 */
+#chap5_tree {
+  background-image: url("images/chap5_tree.jpg");
+  width: 180px;
+  height: 300px; /* *1.5 */
+  bottom: 100px;
+  left: 100px;
+  position: absolute;
+  z-index: 10;
+  display: none;
+}
+
+#item_watermelon {
+  background-image: url("images/watermelon.jpg");
+}
+
+#chap5_house {
+  background-image: url("images/chap5_brick.jpg");
+  width: 375px;
+  height: 106px;
+  bottom: 200px;
+  left: 400px;
+}
+
+/* Chap 6 */
+#chap6_tree {
+  background-image: url("images/chap5_tree.jpg");
+  width: 180px;
+  height: 300px; /* *1.5 */
+  bottom: 100px;
+  left: 100px;
+  position: absolute;
+  z-index: 10;
+}
+
+#item_wood {
+  background-image: url("images/item_wood.jpg");
+}
+
+#chap6_house {
+  background-image: url("images/chap6_house.png");
+  width: 383px;
+  height: 379px;
+  bottom: 200px;
+  left: 400px;
+  display: none;
+}
+
+#chap8 {
+  padding: 10px;
 }

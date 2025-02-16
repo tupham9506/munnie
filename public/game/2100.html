@@ -2,28 +2,124 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <link rel="stylesheet" href="../libs/swiper-bundle.min.css" />
+<link rel="stylesheet" href="../libs/jquery-ui.min.css" />
 <link rel="stylesheet" href="index.css" />
 <div id="game">
+  <div id="home"></div>
+  <div id="home_dialog" title="Game 2100" class="dialog">
+    <div>
+      <button type="button" class="button" onclick="newGame()" style="margin-bottom: 10px;">Chơi mới</button>
+    </div>
+    <div><button type="button" class="button" onclick="continueGame()">Chơi tiếp</button></div>
+  </div>
+  <div id="year_label">Năm 0000</div>
   <div id="game_container">
-    <div id="chap_1" class="chap">
+    <div id="chap_1" class="chap" style="display: block;">
       <div class="overlay">
-        Khi tôi và bạn sinh ra, cả thế giới dường như bừng tỉnh.
+        Khi anh và em sinh ra, cả thế giới dường như bừng tỉnh.
       </div>
     </div>
     <div id="chap2" class="chap">
       <div id="chap2_tree" class="image"></div>
       <div id="chap2_house" class="image"></div>
       <div id="chap2_pond" class="image"></div>
+      <div id="chap2_house_dialog" title="Nhà của Bò và Dưa" class="dialog">
+        Tình yêu cũng như 1 cái cây, chúng ta cần phải chăm sóc để lớn lên và đơm hoa kết trái.
+        <div id="item_water_can" class="item image"></div>
+      </div>
+      <div id="chap2_tree_dialog" title="Mầm cây tình yêu" class="dialog">
+        Hẹn gặp lại em ở thời điểm mà chúng ta đã từng gặp nhau. <br>
+      </div>
     </div>
-  </div>
+    <div id="chap3" class="chap">
+      <div id="chap3_tree" class="image"></div>
+      <div id="chap2_house" class="image"></div>
+      <div id="chap2_pond" class="image"></div>
+      <div id="chap3_tree_dialog" title="Cây tình yêu đã lớn" class="dialog">
+        Thông điệp 1: Có 1 bức thư đã được gửi đến năm 2100.<br>
+        Nó chứa 1 thông điệp giúp em mở kho báu.
+      </div>
+    </div>
+    <div id="chap4" class="chap">
+      <div id="chap4_tree" class="image"></div>
+      <div id="chap2_house" class="image"></div>
+    </div>
+    <div id="chap5" class="chap">
+      <div id="chap5_tree" class="image"></div>
+      <div id="chap5_house" class="image"></div>
+      <div id="chap5_tree_dialog" title="Tình yêu kết trái ngọt" class="dialog">
+        <p>Tặng pé 1 "quả dưa hấu" đáng iu nè. Iu em</p>
+        <div id="item_watermelon" class="item image"></div>
+      </div>
+    </div>
+    <div id="chap6" class="chap">
+      <div id="chap6_tree" class="image"></div>
+      <div id="chap5_house" class="image"></div>
+      <div id="chap6_house" class="image"></div>
+      <div id="chap6_tree_dialog" title="Tình yêu trưởng thành" class="dialog">
+        <p>Khi chúng ta đã đủ hiểu và tin tưởng nhau, hãy cùng nhau làm những điều lớn lao nhé.</p>
+        <p>Tặng em thông điệp thứ 6</p>
+        <div id="item_wood" class="item image"></div>
+      </div>
+      <div id="chap6_house_dialog" title="Ngôi nhà của chúng ta" class="dialog">
+        <p>Thông điệp số 7: Chọn nó vì người ta cho rằng nó xấu.</p>
+      </div>
+    </div>
+    <div id="chap7" class="chap"></div>
+    <div id="chap8" class="chap" style="z-index: 10;">
+      <div>
+        <p>Em đã tìm đủ dữ kiện chưa? Nếu chưa thì hãy quay về thời điểm hiện tại nhé. Yêu em </p>
+      </div>
+      <div id="chap8_message"></div>
+      <div>
+        <div style="margin-bottom: 10px;">
+          Mật mã là 1 dãy số đặc biệt. Em đã đoán ra đó là dãy số nào chưa?
+        </div>
+        <div>
+          <input type="text" id="chap8_pass">
+          <button type="button" id="chap8_check">Kiểm tra</button>
+        </div>
+        <div id="chap8_pass_dialog" class="dialog" title="2013614">
+          2013614 có nghĩa là "Yêu em hết đời hết kiếp". <br>
+          Kiếp này được gặp em là may mắn là điều hạnh phúc nhất mà anh có. <br>
+          Anh sẽ luôn trân trọng và yêu em hết cuộc đời này. <br>
+          Dù cho tận thế vẫn yêu em, vẫn yêu em <br>
+          <button type="button" class="button" onclick="window.location.href='https://munbo.one/'">Mở Kho
+            Báu</button>
+        </div>
+      </div>
+    </div>
+    <div id="chap9" class="chap">
+    </div>
+    <div id="pond" class="image">
+    </div>
+    <!-- Chap 4 -->
+    <div id="pass_4" class="image"></div>
+    <div id="chap4_pond_dialog" title="Lá thư dưới hồ" class="dialog">
+      Hi eny, tuyệt vời khi em tìm thấy thông điệp thứ 4 này.<br>
+      Lá thư này ở dưới nước vì mỗi lần cãi nhau anh phải xuống nước.
+    </div>
 
+    <div id="cloud_1" class="image"></div>
+    <div id="cloud_2" class=" image"></div>
+    <div id="chap4_cloud_dialog" title="Nhắn với mây trời" class="dialog">
+      Gửi thông điệp thứ 3: Nhắn với mây trời rằng anh nhớ em.
+    </div>
+    <div id="sun" class=" image"></div>
+  </div>
 </div>
 <div id="player">
-  <div id="year-container"></div>
+  <div>
+    <div id="year-container"></div>
+    <div id="run_year">>></div>
+  </div>
+
+  <div id="item_bar"></div>
 </div>
 
 
 <script src="../libs/jquery-3.7.1.min.js"></script>
+<script src="../libs/jquery-ui.min.js"></script>
 <script src="../libs/swiper-bundle.min.js"></script>
 <script src="index.js"></script>
 
