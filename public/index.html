@@ -7,6 +7,14 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <title>𝓜𝓾𝓷𝓷𝓲𝓮♡</title>
   <style>
+    *,
+    :before,
+    :after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     html {
       width: 100%;
       height: 100%;
@@ -47,11 +55,13 @@
     }
 
     .social-container {
+      width: 100%;
       position: absolute;
       right: 10px;
       bottom: 10px;
       display: flex;
       gap: 10px;
+      align-items: flex-end;
     }
 
     .facebook {
@@ -87,12 +97,151 @@
         transform: translateY(100vh);
       }
     }
+
+    .play {}
+
+    .play-container {
+      width: 60px;
+      height: 60px;
+      position: relative;
+      border-radius: 50%;
+    }
+
+    .play-btn {
+      position: absolute;
+      appearance: none;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(#FFFFFF, #FFFFFF);
+      cursor: pointer;
+      outline: none;
+    }
+
+    .play-btn::before {
+      content: "";
+      position: absolute;
+      width: 93%;
+      height: 93%;
+      background-color: #000;
+      border-radius: 50%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .play-btn:checked {
+      animation: borderAnimate 700ms ease-in-out 1;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes borderAnimate {
+      0% {
+        transform: rotate(0);
+        background: conic-gradient(#FFFFFF, transparent 20%);
+      }
+
+      80% {
+        background: conic-gradient(#FFFFFF, transparent 90%);
+      }
+
+      100% {
+        transform: rotate(360deg);
+        background: conic-gradient(#FFFFFF, #FFFFFF);
+      }
+    }
+
+    .play-icon {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      left: 110%;
+      top: 50%;
+      background-color: #FFFFFF;
+      transform: translate(-60%, -50%) rotate(90deg);
+      clip-path: polygon(50% 15%, 0% 100%, 100% 100%);
+      transition: all 400ms ease-in-out;
+      cursor: pointer;
+    }
+
+    .play-btn:checked+.play-icon {
+      clip-path: polygon(0 100%, 0% 100%, 100% 100%);
+    }
+
+    .pause-icon {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      left: 100%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+    }
+
+    .pause-icon::before {
+      content: "";
+      position: absolute;
+      width: 0%;
+      height: 100%;
+      background-color: #FFFFFF;
+      left: 0;
+    }
+
+    .pause-icon::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 100%;
+      background-color: #FFFFFF;
+      right: 0;
+    }
+
+    .play-btn:checked~.pause-icon::before {
+      animation: reveal 300ms ease-in-out 350ms 1;
+      animation-fill-mode: forwards;
+    }
+
+    .play-btn:checked~.pause-icon::after {
+      animation: reveal 300ms ease-in-out 600ms 1;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes reveal {
+      0% {
+        width: 0;
+      }
+
+      100% {
+        width: 35%;
+      }
+    }
+
+    .play-title {
+      padding-left: 30px;
+      padding-right: 20px;
+      text-align: left;
+      align-self: center;
+      margin-right: auto;
+    }
   </style>
 </head>
 
 <body>
   <div class="title">𝓜𝓾𝓷𝓷𝓲𝓮</div>
   <div class="social-container">
+    <div class="play">
+      <div class="play-container">
+        <label>
+          <input type="checkbox" class="play-btn" onclick="play(event)" />
+          <div class="play-icon"></div>
+          <div class="play-icon"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="play-title">
+    </div>
+
     <a href="https://www.facebook.com/saka.nguyen.3760">
       <div class="facebook"></div>
     </a>
@@ -102,9 +251,12 @@
     <a href="https://www.tiktok.com/@munnie_01">
       <div class="tiktok"></div>
     </a>
-    <a href="game/2100.html">
+
+    <!-- <a href="game/2100.html">
       <div class="tiktok"></div>
-    </a>
+    </a> -->
+    <audio id="audio0" src="sounds/Cha.mp3" preload="auto"></audio>
+    <audio id="audio1" src="sounds/Em đã hứa sẽ không khóc nữa 2.mp3" preload="auto"></audio>
   </div>
   <script>
     const createSnowflake = () => {
@@ -121,6 +273,28 @@
     };
 
     setInterval(createSnowflake, 500);
+
+    const sounds = ['Cha', 'Em đã hứa sẽ không khóc nữa 2'];
+    let audio;
+    let currentPlay;
+    let playing = null
+    function play(event) {
+      event.stopPropagation()
+      if (typeof currentPlay === 'undefined') {
+        currentPlay = 0
+      } else {
+        currentPlay++;
+      }
+
+      if (!sounds[currentPlay]) currentPlay = 0;
+      if (playing) {
+        playing.pause()
+        playing.currentTime = 0;
+      }
+      playing = document.querySelector(`#audio${currentPlay}`);
+      playing.play();
+      document.querySelector('.play-title').innerHTML = sounds[currentPlay]
+    }
   </script>
 </body>
 
