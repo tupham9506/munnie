@@ -55,11 +55,11 @@
     }
 
     .social-container {
-      width: 100%;
       position: absolute;
       right: 10px;
-      bottom: 10px;
+      bottom: 100px;
       display: flex;
+      flex-direction: column;
       gap: 10px;
       align-items: flex-end;
     }
@@ -98,130 +98,245 @@
       }
     }
 
-    .play {}
 
-    .play-container {
-      width: 60px;
-      height: 60px;
-      position: relative;
-      border-radius: 50%;
-    }
-
-    .play-btn {
+    .player__meta {
+      box-sizing: border-box;
+      font-size: 24px;
+      padding: 50px 20px;
       position: absolute;
-      appearance: none;
+      text-align: center;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+      top: 0;
       width: 100%;
+      z-index: 1;
+    }
+
+    .player__bg {
+      background-position: bottom center;
+      background-size: cover;
       height: 100%;
-      border-radius: 50%;
-      background: conic-gradient(#FFFFFF, #FFFFFF);
-      cursor: pointer;
-      outline: none;
+      position: absolute;
+      width: 100%;
     }
 
-    .play-btn::before {
+    .player__bg:before,
+    .player__bg:after {
       content: "";
-      position: absolute;
-      width: 93%;
-      height: 93%;
-      background-color: #000;
-      border-radius: 50%;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .play-btn:checked {
-      animation: borderAnimate 700ms ease-in-out 1;
-      animation-fill-mode: forwards;
-    }
-
-    @keyframes borderAnimate {
-      0% {
-        transform: rotate(0);
-        background: conic-gradient(#FFFFFF, transparent 20%);
-      }
-
-      80% {
-        background: conic-gradient(#FFFFFF, transparent 90%);
-      }
-
-      100% {
-        transform: rotate(360deg);
-        background: conic-gradient(#FFFFFF, #FFFFFF);
-      }
-    }
-
-    .play-icon {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      left: 110%;
-      top: 50%;
-      background-color: #FFFFFF;
-      transform: translate(-60%, -50%) rotate(90deg);
-      clip-path: polygon(50% 15%, 0% 100%, 100% 100%);
-      transition: all 400ms ease-in-out;
-      cursor: pointer;
-    }
-
-    .play-btn:checked+.play-icon {
-      clip-path: polygon(0 100%, 0% 100%, 100% 100%);
-    }
-
-    .pause-icon {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      left: 100%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      cursor: pointer;
-    }
-
-    .pause-icon::before {
-      content: "";
-      position: absolute;
-      width: 0%;
+      display: block;
       height: 100%;
-      background-color: #FFFFFF;
+      position: absolute;
+      width: 100%;
+    }
+
+    .player__bg:after {
+      background: linear-gradient(to top, #000, #fff);
+      opacity: 0.2;
+      mix-blend-mode: soft-light;
+    }
+
+    .player__controls {
+      background-color: rgba(255, 255, 255, 0.2);
+      bottom: 0;
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.3);
+      height: 80px;
+      position: absolute;
+      width: 100%;
+      box-shadow: 0 2px 4px -4px rgba(0, 0, 0, 0.4), 0 50px 45px -20px rgba(0, 0, 0, 0.2);
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+    }
+
+    .player__controls:before,
+    .player__controls:after {
+      content: "";
+      height: 100%;
+      display: block;
+      pointer-events: none;
+      position: absolute;
+      width: 100%;
+    }
+
+    .player__controls:before {
+      box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.6);
+      mix-blend-mode: soft-light;
+    }
+
+    .player__controls-bg {
+      background-position: bottom center;
+      background-size: cover;
+      height: 100%;
+      filter: blur(30px);
+      overflow: hidden;
+      position: absolute;
+      width: 100%;
+    }
+
+    .player__controls-bg:before {
+      background: linear-gradient(to top, #000, #fff);
+      content: "";
+      display: block;
+      height: 100%;
+      opacity: 0.08;
+      mix-blend-mode: soft-light;
+      position: absolute;
+      width: 100%;
+    }
+
+    .player__play,
+    .player__prev,
+    .player__next {
+      background: rgba(255, 255, 255, 0.01);
+      border-radius: 60px;
+      bottom: 0;
+      box-shadow: 0 -2px 4px 0 rgba(255, 255, 255, 0.1);
+      cursor: pointer;
       left: 0;
-    }
-
-    .pause-icon::after {
-      content: "";
+      margin: auto;
       position: absolute;
-      width: 0;
-      height: 100%;
-      background-color: #FFFFFF;
       right: 0;
+      top: 0;
+      transition: background 0.15s linear;
     }
 
-    .play-btn:checked~.pause-icon::before {
-      animation: reveal 300ms ease-in-out 350ms 1;
-      animation-fill-mode: forwards;
+    .player__play .player__icon,
+    .player__prev .player__icon,
+    .player__next .player__icon {
+      transition: transform 0.05s linear;
     }
 
-    .play-btn:checked~.pause-icon::after {
-      animation: reveal 300ms ease-in-out 600ms 1;
-      animation-fill-mode: forwards;
+    .player__play:before,
+    .player__play:after,
+    .player__prev:before,
+    .player__prev:after,
+    .player__next:before,
+    .player__next:after {
+      border-radius: 60px;
+      content: "";
+      display: block;
+      height: 100%;
+      position: absolute;
+      width: 100%;
     }
 
-    @keyframes reveal {
-      0% {
-        width: 0;
-      }
+    .player__play:before,
+    .player__prev:before,
+    .player__next:before {
+      background: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
+      box-shadow: 0 -1px 1px 0 rgba(255, 255, 255, 0.6);
+      mix-blend-mode: overlay;
+    }
 
-      100% {
-        width: 35%;
-      }
+    .player__play:after,
+    .player__prev:after,
+    .player__next:after {
+      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6);
+      mix-blend-mode: soft-light;
+    }
+
+    .player__play:hover,
+    .player__prev:hover,
+    .player__next:hover {
+      background: radial-gradient(ellipse at center, rgba(12, 11, 23, 0.4) 0%, rgba(86, 76, 132, 0.1) 60%, rgba(255, 255, 255, 0.2) 100%);
+    }
+
+    .player__play:hover .player__icon,
+    .player__prev:hover .player__icon,
+    .player__next:hover .player__icon {
+      transform: scale(0.9);
+    }
+
+    .player__play {
+      height: 60px;
+      width: 60px;
+    }
+
+    .player__prev,
+    .player__next {
+      height: 40px;
+      width: 40px;
+    }
+
+    .player__prev {
+      right: 120px;
+    }
+
+    .player__next {
+      left: 120px;
+    }
+
+    .player__icon {
+      bottom: 0;
+      color: rgba(0, 0, 0, 0.8);
+      cursor: pointer;
+      height: 1em;
+      left: 0;
+      margin: auto;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 1.4em;
+    }
+
+    .player__icon:before {
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .player__icon-play {
+      font-size: 30px;
+      width: 1.2em;
+    }
+
+    .player__icon-prev,
+    .player__icon-next {
+      width: 1.4em;
+    }
+
+    .player__repeat {
+      left: 0.5em;
+      width: 1.4em;
+    }
+
+    .player__shuffle {
+      right: 0.5em;
+      width: 2em;
+    }
+
+    .player__repeat,
+    .player__shuffle {
+      bottom: 0;
+      color: #1A0C1D;
+      height: 1.2em;
+      font-size: 30px;
+      margin: auto;
+      position: absolute;
+      top: 0;
+    }
+
+    .player__list {
+      height: 1.2em;
+      font-size: 20px;
+      left: 20px;
+      position: absolute;
+      top: 30px;
+      width: 1.4em;
+      z-index: 1;
+    }
+
+    .player__volume {
+      height: 1.2em;
+      font-size: 26px;
+      right: 20px;
+      position: absolute;
+      top: 30px;
+      width: 1.4em;
+      z-index: 1;
     }
 
     .play-title {
-      padding-left: 30px;
-      padding-right: 20px;
-      text-align: left;
-      align-self: center;
-      margin-right: auto;
+      position: absolute;
+      bottom: 100px;
+      text-align: center;
+      width: 100%;
     }
   </style>
 </head>
@@ -229,19 +344,6 @@
 <body>
   <div class="title">𝓜𝓾𝓷𝓷𝓲𝓮</div>
   <div class="social-container">
-    <div class="play">
-      <div class="play-container">
-        <label>
-          <input type="checkbox" class="play-btn" onclick="play(event)" />
-          <div class="play-icon"></div>
-          <div class="play-icon"></div>
-        </label>
-      </div>
-    </div>
-
-    <div class="play-title">
-    </div>
-
     <a href="https://www.facebook.com/saka.nguyen.3760">
       <div class="facebook"></div>
     </a>
@@ -252,12 +354,51 @@
       <div class="tiktok"></div>
     </a>
 
-    <!-- <a href="game/2100.html">
-      <div class="tiktok"></div>
-    </a> -->
-    <audio id="audio0" src="sounds/Cha.mp3" preload="auto"></audio>
-    <audio id="audio1" src="sounds/Em đã hứa sẽ không khóc nữa 2.mp3" preload="auto"></audio>
   </div>
+  <div class="play-title">
+  </div>
+  <div class="player">
+    <div class="player__list">
+      <div class="player__icon player__icon-list icon-list"></div>
+    </div>
+    <div class="player__controls">
+
+      <div class="player__prev" onclick="next(event, -1)">
+        <div class="player__icon player__icon-prev icon-prev">
+          <svg height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+            <path fill="#ffffff"
+              d="M267.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-320c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160L64 241 64 96c0-17.7-14.3-32-32-32S0 78.3 0 96L0 416c0 17.7 14.3 32 32 32s32-14.3 32-32l0-145 11.5 9.6 192 160z" />
+          </svg>
+        </div>
+      </div>
+      <div class="player__play" onclick="play(event)">
+        <div class="player__icon player__icon-play ">
+          <svg class="play-icon" height="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+            <path fill="#ffffff"
+              d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80L0 432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
+          </svg>
+          <svg class="pause-icon" style="display: none;" height="30" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 320 512">
+            <path fill="#ffffff"
+              d="M48 64C21.5 64 0 85.5 0 112L0 400c0 26.5 21.5 48 48 48l32 0c26.5 0 48-21.5 48-48l0-288c0-26.5-21.5-48-48-48L48 64zm192 0c-26.5 0-48 21.5-48 48l0 288c0 26.5 21.5 48 48 48l32 0c26.5 0 48-21.5 48-48l0-288c0-26.5-21.5-48-48-48l-32 0z" />
+          </svg>
+        </div>
+      </div>
+      <div class="player__next" onclick="next(event, 1)">
+        <div class="player__icon player__icon-next icon-next">
+          <svg height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+            <path fill="#ffffff"
+              d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416L0 96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4l192 160L256 241l0-145c0-17.7 14.3-32 32-32s32 14.3 32 32l0 320c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-145-11.5 9.6-192 160z" />
+          </svg>
+        </div>
+      </div>
+      <div class="player__shuffle">
+        <div class="player__icon player__icon-shuffle icon-shuffle"></div>
+      </div>
+    </div>
+  </div>
+  <audio id="audio0" src="sounds/Cha.mp3" preload="auto"></audio>
+  <audio id="audio1" src="sounds/Em đã hứa sẽ không khóc nữa 2.mp3" preload="auto"></audio>
   <script>
     const createSnowflake = () => {
       const snowflake = document.createElement('div');
@@ -277,13 +418,35 @@
     const sounds = ['Cha', 'Em đã hứa sẽ không khóc nữa 2'];
     let audio;
     let currentPlay;
-    let playing = null
+    let playing = null;
+    let isPlaying = false;
+
     function play(event) {
+      if (!playing) {
+        document.querySelector('.play-icon').style.display = 'none'
+        document.querySelector('.pause-icon').style.display = 'inline'
+        next(event, 1); return
+      }
+
+      if (isPlaying) {
+        playing.pause();
+        isPlaying = false;
+        document.querySelector('.play-icon').style.display = 'inline'
+        document.querySelector('.pause-icon').style.display = 'none'
+      } else {
+        playing.play();
+        isPlaying = true
+        document.querySelector('.play-icon').style.display = 'none'
+        document.querySelector('.pause-icon').style.display = 'inline'
+
+      }
+    }
+    function next(event, num) {
       event.stopPropagation()
       if (typeof currentPlay === 'undefined') {
         currentPlay = 0
       } else {
-        currentPlay++;
+        currentPlay = currentPlay + num;
       }
 
       if (!sounds[currentPlay]) currentPlay = 0;
@@ -293,7 +456,8 @@
       }
       playing = document.querySelector(`#audio${currentPlay}`);
       playing.play();
-      document.querySelector('.play-title').innerHTML = sounds[currentPlay]
+      document.querySelector('.play-title').innerHTML = sounds[currentPlay];
+      isPlaying = true
     }
   </script>
 </body>
