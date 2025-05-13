@@ -652,27 +652,12 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+      const images = [];
 
-      const images = [
-        "images/BTT_6431.JPG",
-        "images/BTT_6470.JPG",
-        "images/BTT_6479.JPG",
-        "images/BTT_6532.JPG",
-        "images/BTT_6557.JPG",
-        "images/BTT_6588.JPG",
-        "images/BTT_6595.JPG",
-        "images/BTT_6627.JPG",
-        "images/BTT_6665.JPG",
-        "images/BTT_6680.JPG",
-        "images/BTT_6701.JPG",
-        "images/BTT_6763.JPG",
-        "images/BTT_6766.JPG",
-        "images/BTT_6780.JPG",
-        "images/BTT_6814.JPG",
-        "images/BTT_6838.JPG",
-        "images/BTT_6865.JPG",
-        "images/QR.JPG"
-      ];
+      for (let i = 1; i <= 23; i++) {
+        images.push(`images/${i}.JPG`);
+      }
+      images.push("images/QR.JPG")
 
       const slideshow = document.getElementById("slideshow");
       const heartIconDiv = document.querySelector(".heart-icon");
