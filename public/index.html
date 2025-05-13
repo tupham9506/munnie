@@ -1,464 +1,1063 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <title>𝓜𝓾𝓷𝓷𝓲𝓮♡</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bò 🐮❤️🍉 Mun</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    *,
-    :before,
-    :after {
+    /* Thêm CSS này để nền bên ngoài body là màu đen trên máy tính */
+    html {
+      background: black;
+      height: 100%;
+    }
+
+    /* Reset CSS cơ bản */
+    * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    html {
-      width: 100%;
-      height: 100%;
-      background-color: #000000;
-      display: flex;
-      justify-content: center;
-    }
-
     body {
-      margin: 0;
-      overflow: hidden;
+      font-family: 'Roboto', Arial, sans-serif;
+      background: black;
+      /* Nền đen bên trong khung điện thoại */
       color: white;
-      font-family: 'Courier New', Courier, monospace;
-      text-align: center;
+      height: 100vh;
+      /* Trên di động, body chiếm 100vh */
+      overflow: hidden;
       position: relative;
-      background: url('munnie.JPG');
-      background-size: cover;
+      outline: none;
+      border: none;
+    }
+
+    /* Container chính cho các trang */
+    #pageContainer {
       width: 100%;
       height: 100%;
-      background-repeat: no-repeat;
-      max-width: 500px;
+      position: relative;
     }
 
-    .title {
-      font-size: 4em;
-      text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
-      padding-top: 20px;
-      opacity: 0.9;
-    }
 
-    .snowflake {
+    /* Container cho các trang (slide, QR, story, search) */
+    .page-container {
+      width: 100%;
+      height: 100%;
       position: absolute;
-      top: -10px;
-      color: white;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      display: none;
+    }
+
+    /* Khi page-container có lớp active */
+    .page-container.active {
+      /* display sẽ được set cụ thể cho từng trang active */
+    }
+
+    /* Trang Slide */
+    #slidePage {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    /* Khi slidePage active */
+    #slidePage.active {
+      display: block;
+    }
+
+    .slide-wrapper {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      touch-action: pan-x pan-y;
+      /* Cho phép cả vuốt ngang và dọc mặc định */
+      outline: none;
+      border: none;
+    }
+
+    .slide-wrapper::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+      z-index: 5;
       pointer-events: none;
-      animation: fall linear infinite;
-      opacity: 0.5;
     }
 
-    .social-container {
+    .slideshow {
+      display: flex;
+      height: 100%;
+      transition: transform 0.5s ease-in-out;
+      /* Giữ transition mặc định cho việc chuyển slide */
+      outline: none;
+      border: none;
+      /* Chiều rộng sẽ được set bằng JS */
+    }
+
+    .slideshow img {
+      height: 100%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    /* Các phần tử chỉ hiển thị trên trang slide */
+    .slide-only-content {
+      z-index: 10;
       position: absolute;
-      right: 10px;
-      bottom: 100px;
+      /* Đây là nơi position: absolute được áp dụng */
+      padding-left: 15px;
+      box-sizing: border-box;
+      /* Đây là nơi box-sizing: border-box được áp dụng */
+      pointer-events: none;
+    }
+
+    .action-icons {
+      pointer-events: auto;
+    }
+
+    .username {
+      /* Đã chỉnh: bottom */
+      bottom: 120px;
+      left: 0;
+      font-weight: bold;
+      font-size: 1.1rem;
+      max-width: calc(100% - 40px);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .username .ai-tag {
+      font-size: 0.7em;
+      opacity: 1;
+      margin-left: 8px;
+      font-weight: normal;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 2px 5px;
+      border-radius: 4px;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .caption {
+      bottom: 95px;
+      left: 0;
+      font-size: 0.9rem;
+      line-height: 1.2;
+      width: 100%;
+      padding-right: 15px;
+      margin-bottom: 0;
+      word-wrap: break-word;
+    }
+
+    /* Đã thêm: Đảm bảo icon trái tim trong caption có màu đỏ */
+    .caption .fas.fa-heart {
+      color: red;
+    }
+
+    /* New container for the tags */
+    .source-tags-container {
+      bottom: 70px;
+      /* Position the whole row */
+      left: 0;
+      /* The other positioning properties (padding-left, box-sizing, z-index, pointer-events)
+         are inherited from .slide-only-content */
+      display: flex;
+      /* Use flexbox for horizontal layout */
+      align-items: center;
+      /* Align items vertically in the middle */
+      /* Đã cập nhật: Giảm khoảng cách giữa các thẻ */
+      gap: 5px;
+      /* Space between the tags */
+      width: 100%;
+      /* Take full width of the parent */
+      max-width: calc(100% - 30px);
+      /* Limit max width to ensure padding */
+    }
+
+    /* Styles for individual tags inside the container */
+    .ai-tag-google,
+    .ai-tag-tiktok {
+      font-size: 0.8rem;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 2px 5px;
+      border-radius: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-shrink: 0;
+      /* Prevent tags from shrinking too much */
+    }
+
+
+    .action-icons {
+      bottom: 120px;
+      right: 15px;
+      padding-left: 0;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      align-items: flex-end;
+      gap: 28px;
+      align-items: center;
+      font-size: 1.3rem;
+      color: white;
     }
 
-    .facebook {
-      background-image: url('facebook.png');
-      width: 40px;
-      height: 40px;
-      background-size: 100%;
-    }
-
-    .instagram {
-      background-image: url('instagram.png');
-      width: 40px;
-      height: 40px;
-      background-size: 100%;
-    }
-
-    .tiktok {
-      background-image: url('tiktok.png');
-      width: 40px;
-      height: 40px;
-      background-size: 100%;
-    }
-
-    .game {
-      background-image: url('tiktok.png');
-      width: 40px;
-      height: 40px;
-      background-size: 100%;
-    }
-
-    @keyframes fall {
-      to {
-        transform: translateY(100vh);
-      }
-    }
-
-
-    .player__meta {
-      box-sizing: border-box;
-      font-size: 24px;
-      padding: 50px 20px;
-      position: absolute;
-      text-align: center;
-      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
-      top: 0;
-      width: 100%;
-      z-index: 1;
-    }
-
-    .player__bg {
-      background-position: bottom center;
-      background-size: cover;
-      height: 100%;
-      position: absolute;
-      width: 100%;
-    }
-
-    .player__bg:before,
-    .player__bg:after {
-      content: "";
-      display: block;
-      height: 100%;
-      position: absolute;
-      width: 100%;
-    }
-
-    .player__bg:after {
-      background: linear-gradient(to top, #000, #fff);
-      opacity: 0.2;
-      mix-blend-mode: soft-light;
-    }
-
-    .player__controls {
-      background-color: rgba(255, 255, 255, 0.2);
-      bottom: 0;
-      box-shadow: inset 0 1px rgba(255, 255, 255, 0.3);
-      height: 80px;
-      position: absolute;
-      width: 100%;
-      box-shadow: 0 2px 4px -4px rgba(0, 0, 0, 0.4), 0 50px 45px -20px rgba(0, 0, 0, 0.2);
-      border-bottom-left-radius: 30px;
-      border-bottom-right-radius: 30px;
-    }
-
-    .player__controls:before,
-    .player__controls:after {
-      content: "";
-      height: 100%;
-      display: block;
-      pointer-events: none;
-      position: absolute;
-      width: 100%;
-    }
-
-    .player__controls:before {
-      box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.6);
-      mix-blend-mode: soft-light;
-    }
-
-    .player__controls-bg {
-      background-position: bottom center;
-      background-size: cover;
-      height: 100%;
-      filter: blur(30px);
-      overflow: hidden;
-      position: absolute;
-      width: 100%;
-    }
-
-    .player__controls-bg:before {
-      background: linear-gradient(to top, #000, #fff);
-      content: "";
-      display: block;
-      height: 100%;
-      opacity: 0.08;
-      mix-blend-mode: soft-light;
-      position: absolute;
-      width: 100%;
-    }
-
-    .player__play,
-    .player__prev,
-    .player__next {
-      background: rgba(255, 255, 255, 0.01);
-      border-radius: 60px;
-      bottom: 0;
-      box-shadow: 0 -2px 4px 0 rgba(255, 255, 255, 0.1);
+    .action-icons div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       cursor: pointer;
-      left: 0;
-      margin: auto;
-      position: absolute;
-      right: 0;
-      top: 0;
-      transition: background 0.15s linear;
     }
 
-    .player__play .player__icon,
-    .player__prev .player__icon,
-    .player__next .player__icon {
-      transition: transform 0.05s linear;
+    .action-icons i {
+      font-size: 2rem;
+      margin-bottom: 5px;
     }
 
-    .player__play:before,
-    .player__play:after,
-    .player__prev:before,
-    .player__prev:after,
-    .player__next:before,
-    .player__next:after {
-      border-radius: 60px;
-      content: "";
-      display: block;
-      height: 100%;
-      position: absolute;
-      width: 100%;
+    .action-icons span {
+      font-size: 0.9rem;
     }
 
-    .player__play:before,
-    .player__prev:before,
-    .player__next:before {
-      background: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
-      box-shadow: 0 -1px 1px 0 rgba(255, 255, 255, 0.6);
-      mix-blend-mode: overlay;
+    .action-icons .heart-icon i {
+      transition: color 0.3s ease, transform 0.3s ease;
     }
 
-    .player__play:after,
-    .player__prev:after,
-    .player__next:after {
-      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6);
-      mix-blend-mode: soft-light;
+    /* Đã chỉnh: Icon trái tim khi được yêu thích giờ là màu đỏ */
+    .action-icons .heart-icon i.liked {
+      color: red;
+      transform: scale(1.2);
     }
 
-    .player__play:hover,
-    .player__prev:hover,
-    .player__next:hover {
-      background: radial-gradient(ellipse at center, rgba(12, 11, 23, 0.4) 0%, rgba(86, 76, 132, 0.1) 60%, rgba(255, 255, 255, 0.2) 100%);
+    .action-icons .comment-icon i,
+    .action-icons .share-icon i {
+      transition: transform 0.2s ease;
     }
 
-    .player__play:hover .player__icon,
-    .player__prev:hover .player__icon,
-    .player__next:hover .player__icon {
+    .action-icons div:active i {
       transform: scale(0.9);
     }
 
-    .player__play {
-      height: 60px;
-      width: 60px;
+    .action-icons .heart-icon i.liked:active {
+      transform: scale(1.1);
     }
 
-    .player__prev,
-    .player__next {
-      height: 40px;
-      width: 40px;
-    }
-
-    .player__prev {
-      right: 120px;
-    }
-
-    .player__next {
-      left: 120px;
-    }
-
-    .player__icon {
+    .bottom-nav {
+      position: absolute;
       bottom: 0;
-      color: rgba(0, 0, 0, 0.8);
-      cursor: pointer;
-      height: 1em;
-      left: 0;
-      margin: auto;
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 1.4em;
-    }
-
-    .player__icon:before {
-      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
-    }
-
-    .player__icon-play {
-      font-size: 30px;
-      width: 1.2em;
-    }
-
-    .player__icon-prev,
-    .player__icon-next {
-      width: 1.4em;
-    }
-
-    .player__repeat {
-      left: 0.5em;
-      width: 1.4em;
-    }
-
-    .player__shuffle {
-      right: 0.5em;
-      width: 2em;
-    }
-
-    .player__repeat,
-    .player__shuffle {
-      bottom: 0;
-      color: #1A0C1D;
-      height: 1.2em;
-      font-size: 30px;
-      margin: auto;
-      position: absolute;
-      top: 0;
-    }
-
-    .player__list {
-      height: 1.2em;
-      font-size: 20px;
-      left: 20px;
-      position: absolute;
-      top: 30px;
-      width: 1.4em;
-      z-index: 1;
-    }
-
-    .player__volume {
-      height: 1.2em;
-      font-size: 26px;
-      right: 20px;
-      position: absolute;
-      top: 30px;
-      width: 1.4em;
-      z-index: 1;
-    }
-
-    .play-title {
-      position: absolute;
-      bottom: 100px;
-      text-align: center;
       width: 100%;
+      height: 60px;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 50;
+      pointer-events: auto;
+    }
+
+    .bottom-nav-item {
+      color: white;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+      cursor: pointer;
+      height: 100%;
+      transition: background-color 0.2s ease, opacity 0.3s ease;
+      opacity: 0.6;
+    }
+
+    .bottom-nav-item:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .bottom-nav-item:active {
+      transform: scale(0.95);
+    }
+
+    /* Active navigation item style */
+    .bottom-nav-item.active-nav {
+      opacity: 1;
+    }
+
+    /* Đã chỉnh: Icon dấu cộng giờ là màu xanh da trời */
+    .bottom-nav-item .fa-plus-circle {
+      font-size: 2.6rem;
+      color: skyblue;
+      box-sizing: content-box;
+    }
+
+    .bottom-nav-item span {
+      display: none;
+    }
+
+    /* Style cho trang QR Code */
+    #qrPage {
+      width: 100%;
+      height: 100%;
+      background: black;
+      padding-bottom: 60px;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    /* Khi qrPage active */
+    #qrPage.active {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+
+    /* Điều chỉnh kích thước ảnh QR */
+    #qrPage img {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* Giữ nguyên cover cho ảnh QR nếu muốn phủ đầy */
+    }
+
+    /* Style cho khung chữ dưới QR */
+    #qrPage .qr-text-overlay {
+      position: absolute;
+      top: 68%;
+      left: 0;
+      width: 100%;
+      color: skyblue;
+      /* Đã đổi thành màu xanh da trời */
+      text-align: center;
+      padding: 10px 15px;
+      font-size: 1.5rem;
+      box-sizing: border-box;
+      z-index: 10;
+      display: block;
+      transform: translateX(0%);
+      font-weight: normal;
+    }
+
+    /* Style cho trang Story Timeline */
+    #storyPage {
+      width: 100%;
+      height: 100%;
+      background: black;
+      padding: 20px;
+      padding-bottom: 80px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Khi storyPage active */
+    #storyPage.active {
+      display: flex;
+    }
+
+    #storyPage::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('images/BTT_6470.JPG');
+      background-size: cover;
+      background-position: center;
+      filter: blur(8px);
+      z-index: 1;
+    }
+
+    .timeline {
+      position: relative;
+      width: 95%;
+      max-width: 700px;
+      margin: 0 auto;
+      margin-top: 30px;
+      padding: 20px 0;
+      color: white;
+      z-index: 2;
+    }
+
+    /* Màu đường kẻ dọc vẫn là xanh da trời */
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      background: skyblue;
+      top: 0;
+      bottom: 0;
+      left: 31px;
+      margin-left: 0;
+    }
+
+    .timeline-item {
+      padding: 20px 0;
+      position: relative;
+      background: inherit;
+      width: 100%;
+      padding-left: 60px;
+      text-align: left;
+    }
+
+    /* Màu chấm tròn vẫn là xanh da trời */
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      left: 23px;
+      background: skyblue;
+      border: 2px solid white;
+      top: 25px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .timeline-left {
+      left: 0;
+      padding-right: 0;
+      text-align: left;
+    }
+
+    .timeline-right {
+      left: 0;
+      padding-left: 60px;
+      text-align: left;
+    }
+
+    .timeline-right::after {
+      left: 23px;
+    }
+
+    .timeline-content {
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      position: relative;
+      border-radius: 8px;
+    }
+
+    /* Màu chữ tiêu đề trong khối nội dung vẫn là xanh da trời */
+    .timeline-content h3 {
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+      color: skyblue;
+    }
+
+    .timeline-content p {
+      color: black;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .timeline-content p i {
+      margin-right: 8px;
+      color: black;
+    }
+
+    /* Đảm bảo màu của link livestream và số điện thoại là đen và có gạch chân */
+    .timeline-content p a {
+      color: black;
+      text-decoration: underline;
+    }
+
+
+    /* Style cho trang Search (Bản đồ) */
+    #searchPage {
+      width: 100%;
+      height: calc(100vh - 60px);
+      background: black;
+      box-sizing: border-box;
+      display: none;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    /* Khi searchPage active */
+    #searchPage.active {
+      display: flex;
+    }
+
+    #searchPage iframe {
+      width: 100%;
+      flex-grow: 1;
+      border: none;
+      border-radius: 0;
+      z-index: 2;
+      position: relative;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    /* --- MEDIA QUERY CHO MÀN HÌNH MÁY TÍNH (BODY LÀ KHUNG ĐIỆN THOẠI) --- */
+    @media (min-width: 768px) {
+      body {
+        /* Bây giờ body chính là khung điện thoại */
+        max-width: 450px;
+        /* Chiều rộng tối đa giống điện thoại */
+        max-height: 100%;
+        /* ĐÃ THAY ĐỔI THÀNH 100% */
+        margin: 0 auto;
+        /* ĐỂ KHUNG ĐIỆN THOẠI RA GIỮA MÀN HÌNH */
+        border-radius: 15px;
+        /* Bo góc cho viền điện thoại */
+        overflow: hidden;
+        /* Đảm bảo nội dung không tràn ra ngoài */
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+        /* Thêm đổ bóng tạo cảm giác nổi bật */
+
+        /* Đặt lại display về block để margin:auto hoạt động */
+        display: block;
+        /* Điều chỉnh chiều cao để body vừa vặn trong viewport và không có margin trên dưới */
+        height: 100vh;
+      }
+
+      #pageContainer {
+        /* pageContainer giờ sẽ tràn ra 100% trong body đã bị giới hạn */
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Đảm bảo splash screen cũng tuân thủ kích thước body mới */
+      .splash-screen {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Điều chỉnh chiều cao cho iframe trên searchPage khi body bị giới hạn */
+      #searchPage {
+        height: calc(100% - 60px);
+        /* 100% của body trừ đi chiều cao bottom-nav */
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="title">𝓜𝓾𝓷𝓷𝓲𝓮</div>
-  <div class="social-container">
-    <a href="https://www.facebook.com/saka.nguyen.3760">
-      <div class="facebook"></div>
-    </a>
-    <a href="https://www.instagram.com/mun.munta">
-      <div class="instagram"></div>
-    </a>
-    <a href="https://www.tiktok.com/@munnie_01">
-      <div class="tiktok"></div>
-    </a>
+  <audio id="background-music" loop>
+    <source src="images/duchotanthe.mp3" type="audio/mpeg">
+    Trình duyệt của bạn không hỗ trợ thẻ audio.
+  </audio>
 
-  </div>
-  <div class="play-title">
-  </div>
-  <div class="player">
-    <div class="player__list">
-      <div class="player__icon player__icon-list icon-list"></div>
-    </div>
-    <div class="player__controls">
+  <div id="pageContainer">
+    <div id="slidePage" class="page-container">
+      <div class="slide-wrapper">
+        <div class="slideshow" id="slideshow">
+        </div>
+      </div>
+      <div class="username slide-only-content">
+        Bò và Mun 🐮 <span class="emoji">🍉</span>
+      </div>
+      <div class="caption slide-only-content">Mời bạn tham dự đám cưới của tụi mình nha <i class="fas fa-heart"></i>
+      </div>
 
-      <div class="player__prev" onclick="next(event, -1)">
-        <div class="player__icon player__icon-prev icon-prev">
-          <svg height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-            <path fill="#ffffff"
-              d="M267.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-320c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160L64 241 64 96c0-17.7-14.3-32-32-32S0 78.3 0 96L0 416c0 17.7 14.3 32 32 32s32-14.3 32-32l0-145 11.5 9.6 192 160z" />
-          </svg>
+      <div class="source-tags-container slide-only-content">
+        <div class="ai-tag-google">
+          <span>Được tạo bởi Gemini Google</span>
+        </div>
+        <div class="ai-tag-tiktok">
+          <span>Tiktok</span>
         </div>
       </div>
-      <div class="player__play" onclick="play(event)">
-        <div class="player__icon player__icon-play ">
-          <svg class="play-icon" height="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-            <path fill="#ffffff"
-              d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80L0 432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
-          </svg>
-          <svg class="pause-icon" style="display: none;" height="30" xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 320 512">
-            <path fill="#ffffff"
-              d="M48 64C21.5 64 0 85.5 0 112L0 400c0 26.5 21.5 48 48 48l32 0c26.5 0 48-21.5 48-48l0-288c0-26.5-21.5-48-48-48L48 64zm192 0c-26.5 0-48 21.5-48 48l0 288c0 26.5 21.5 48 48 48l32 0c26.5 0 48-21.5 48-48l0-288c0-26.5-21.5-48-48-48l-32 0z" />
-          </svg>
-        </div>
-      </div>
-      <div class="player__next" onclick="next(event, 1)">
-        <div class="player__icon player__icon-next icon-next">
-          <svg height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-            <path fill="#ffffff"
-              d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416L0 96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4l192 160L256 241l0-145c0-17.7 14.3-32 32-32s32 14.3 32 32l0 320c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-145-11.5 9.6-192 160z" />
-          </svg>
-        </div>
-      </div>
-      <div class="player__shuffle">
-        <div class="player__icon player__icon-shuffle icon-shuffle"></div>
+
+      <div class="action-icons slide-only-content">
+        <div class="heart-icon"><i class="fas fa-heart"></i><span>5K</span></div>
+        <div class="comment-icon"><i class="fas fa-comment-dots"></i><span>2K</span></div>
+        <div class="share-icon"><i class="fas fa-share"></i><span>0</span></div>
       </div>
     </div>
+
+    <div id="qrPage" class="page-container">
+      <img src="images/QR.JPG" alt="Mã QR">
+      <div class="qr-text-overlay">
+        Mừng hạnh phúc tụi mình<br>ở đây nhé ❤️
+      </div>
+    </div>
+
+    <div id="storyPage" class="page-container">
+      <div class="timeline">
+        <div class="timeline-item timeline-left">
+          <div class="timeline-content">
+            <h3>Ăn hỏi</h3>
+            <p>
+              <i class="fas fa-clock"></i> 09:00 17/05/2025<br>
+              <i class="fas fa-map-marker-alt"></i> Số 2 Hạ Yên, Yên Hòa, Cầu Giấy, Hà Nội.
+            </p>
+          </div>
+        </div>
+        <div class="timeline-item timeline-right">
+          <div class="timeline-content">
+            <h3>Đám cưới</h3>
+            <p>
+              <i class="fas fa-clock"></i> 15:30 18/05/2025<br>
+              <i class="fas fa-map-marker-alt"></i> Chương Lộc, Chương Dương, Thường Tín, Hà Nội.<br>
+              <i class="fas fa-video"></i> Livestream: <a href="https://www.tiktok.com/@munnie_01"
+                target="_blank">TikTok</a>
+            </p>
+          </div>
+        </div>
+        <div class="timeline-item timeline-left">
+          <div class="timeline-content">
+            <h3>Liên hệ</h3>
+            <p>
+              <i class="fas fa-phone"></i> Chú rể: <a href="tel:0969616090">0969616090</a><br>
+              <i class="fas fa-phone"></i> Cô dâu: <a href="tel:0376796876">0376796876</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="searchPage" class="page-container">
+      <iframe src="https://maps.google.com/maps?q=20.8475597,105.8907549&z=16&output=embed" allowfullscreen=""
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
   </div>
-  <audio id="audio0" src="sounds/Cha.mp3" preload="auto"></audio>
-  <audio id="audio1" src="sounds/Em đã hứa sẽ không khóc nữa 2.mp3" preload="auto"></audio>
+
+  <div class="bottom-nav">
+    <div class="bottom-nav-item" data-page="slidePage">
+      <i class="fas fa-home"></i>
+    </div>
+    <div class="bottom-nav-item" data-page="searchPage"> <i class="fas fa-search"></i>
+    </div>
+    <div class="bottom-nav-item" data-page="storyPage"> <i class="fas fa-plus-circle"></i>
+    </div>
+    <div class="bottom-nav-item" data-page="qrPage"> <i class="fas fa-envelope"></i>
+    </div>
+    <div class="bottom-nav-item" id="profileNavItem">
+      <i class="fas fa-user"></i>
+    </div>
+  </div>
+
   <script>
-    const createSnowflake = () => {
-      const snowflake = document.createElement('div');
-      snowflake.className = 'snowflake';
-      snowflake.innerHTML = '❄';
-      snowflake.style.left = Math.random() * window.innerWidth + 'px';
-      snowflake.style.fontSize = Math.random() * 20 + 10 + 'px';
-      snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
-      document.body.appendChild(snowflake);
-      setTimeout(() => {
-        snowflake.remove();
-      }, 5000);
-    };
+    document.addEventListener("DOMContentLoaded", function () {
 
-    setInterval(createSnowflake, 500);
+      const images = [
+        "images/BTT_6431.JPG",
+        "images/BTT_6470.JPG",
+        "images/BTT_6479.JPG",
+        "images/BTT_6532.JPG",
+        "images/BTT_6557.JPG",
+        "images/BTT_6588.JPG",
+        "images/BTT_6595.JPG",
+        "images/BTT_6627.JPG",
+        "images/BTT_6665.JPG",
+        "images/BTT_6680.JPG",
+        "images/BTT_6701.JPG",
+        "images/BTT_6763.JPG",
+        "images/BTT_6766.JPG",
+        "images/BTT_6780.JPG",
+        "images/BTT_6814.JPG",
+        "images/BTT_6838.JPG",
+        "images/BTT_6865.JPG",
+        "images/QR.JPG"
+      ];
 
-    const sounds = ['Cha', 'Em đã hứa sẽ không khóc nữa 2'];
-    let audio;
-    let currentPlay;
-    let playing = null;
-    let isPlaying = false;
+      const slideshow = document.getElementById("slideshow");
+      const heartIconDiv = document.querySelector(".heart-icon");
+      const heartIcon = heartIconDiv ? heartIconDiv.querySelector("i") : null;
+      const heartCountSpan = heartIconDiv ? heartIconDiv.querySelector("span") : null;
+      const slideWrapper = document.querySelector(".slide-wrapper");
+      const backgroundMusic = document.getElementById("background-music");
+      const navItems = document.querySelectorAll(".bottom-nav-item");
 
-    function play(event) {
-      if (!playing) {
-        document.querySelector('.play-icon').style.display = 'none'
-        document.querySelector('.pause-icon').style.display = 'inline'
-        next(event, 1); return
+      const pageContainers = document.querySelectorAll('.page-container');
+      const homeNavItem = document.querySelector('.bottom-nav-item[data-page="slidePage"]');
+      const qrNavItem = document.querySelector('.bottom-nav-item[data-page="qrPage"]');
+      const storyNavItem = document.querySelector('.bottom-nav-item[data-page="storyPage"]');
+      const searchNavItem = document.querySelector('.bottom-nav-item[data-page="searchPage"]');
+      const profileNavItem = document.getElementById('profileNavItem');
+
+      const slideOnlyElements = document.querySelectorAll('#slidePage .slide-only-content');
+
+
+      let currentIndex = 0;
+      const totalImages = images.length;
+
+      // Biến cho cả touch và mouse events
+      let startX = 0;
+      const swipeThreshold = 50; // Khoảng cách vuốt/kéo tối thiểu để kích hoạt chuyển ảnh
+
+      // Biến riêng cho mouse drag
+      let isDragging = false;
+      let initialTranslateX = 0; // Vị trí translateX của slideshow khi bắt đầu kéo
+
+      // Biến cho requestAnimationFrame
+      let animationFrameId = null;
+      let pendingTransform = null; // Để lưu giá trị transform đang chờ được cập nhật
+
+      let autoSlideInterval;
+      const autoSlideDelay = 3000;
+      let interactionTimer;
+
+
+      const playMusic = () => {
+        if (backgroundMusic && backgroundMusic.paused) {
+          backgroundMusic.play().catch(error => {
+            console.warn("Lỗi phát nhạc tự động:", error.message, "Cần tương tác người dùng.");
+          });
+        }
+      };
+
+      const addMusicInteractionListeners = () => {
+        if (document.getElementById('slidePage').classList.contains('active') && slideWrapper) {
+          if (!slideWrapper.dataset.musicListenerAdded) {
+            slideWrapper.addEventListener('click', playMusic, {
+              once: true
+            });
+            slideWrapper.addEventListener('touchstart', playMusic, {
+              once: true
+            });
+            slideWrapper.dataset.musicListenerAdded = true;
+          }
+        }
+      };
+
+      const initialBodyWidth = document.body.offsetWidth;
+
+      function updateSlideshowWidth() {
+        if (slideshow && slideWrapper) {
+          const currentSlideWrapperWidth = slideWrapper.offsetWidth;
+          slideshow.style.width = `${totalImages * currentSlideWrapperWidth}px`;
+          slideshow.style.transform = `translateX(-${currentIndex * currentSlideWrapperWidth}px)`;
+
+          const imagesInSlideshow = slideshow.querySelectorAll('img.slide-image');
+          imagesInSlideshow.forEach(img => {
+            img.style.width = `${currentSlideWrapperWidth}px`;
+          });
+        }
       }
 
-      if (isPlaying) {
-        playing.pause();
-        isPlaying = false;
-        document.querySelector('.play-icon').style.display = 'inline'
-        document.querySelector('.pause-icon').style.display = 'none'
-      } else {
-        playing.play();
-        isPlaying = true
-        document.querySelector('.play-icon').style.display = 'none'
-        document.querySelector('.pause-icon').style.display = 'inline'
-
-      }
-    }
-    function next(event, num) {
-      event.stopPropagation()
-      if (typeof currentPlay === 'undefined') {
-        currentPlay = 0
-      } else {
-        currentPlay = currentPlay + num;
+      // Hàm để thực hiện cập nhật transform một cách mượt mà
+      function animateSlideshowTransform() {
+        if (pendingTransform !== null) {
+          slideshow.style.transform = pendingTransform;
+          pendingTransform = null; // Đặt lại để chỉ cập nhật một lần mỗi frame
+        }
+        animationFrameId = null; // Đặt lại ID để cho phép yêu cầu frame tiếp theo
       }
 
-      if (!sounds[currentPlay]) currentPlay = 0;
-      if (playing) {
-        playing.pause()
-        playing.currentTime = 0;
+      function changeSlide(direction) {
+        if (!document.getElementById('slidePage').classList.contains('active') || totalImages === 0) return;
+
+        currentIndex = (currentIndex + direction + totalImages) % totalImages;
+        const slideWidth = slideWrapper.offsetWidth;
+        slideshow.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
       }
-      playing = document.querySelector(`#audio${currentPlay}`);
-      playing.play();
-      document.querySelector('.play-title').innerHTML = sounds[currentPlay];
-      isPlaying = true
-    }
+
+      function startAutoSlide() {
+        if (totalImages > 1 && !autoSlideInterval && document.getElementById('slidePage').classList.contains('active')) {
+          autoSlideInterval = setInterval(() => {
+            changeSlide(1);
+          }, autoSlideDelay);
+        }
+      }
+
+      function stopAutoSlide() {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = null;
+      }
+
+      function resetInteractionTimer() {
+        clearTimeout(interactionTimer);
+        if (document.getElementById('slidePage').classList.contains('active')) {
+          interactionTimer = setTimeout(startAutoSlide, autoSlideDelay);
+        }
+      }
+
+      function showPage(pageId) {
+        pageContainers.forEach(container => {
+          container.classList.remove('active');
+        });
+
+        const targetPage = document.getElementById(pageId);
+        if (targetPage) {
+          targetPage.classList.add('active');
+        }
+
+        if (pageId === 'slidePage') {
+          slideOnlyElements.forEach(element => {
+            element.style.display = '';
+          });
+          if (slideWrapper) {
+            slideWrapper.style.display = 'block';
+            updateSlideshowWidth();
+          }
+          startAutoSlide();
+          addMusicInteractionListeners();
+        } else {
+          slideOnlyElements.forEach(element => {
+            element.style.display = 'none';
+          });
+          if (slideWrapper) {
+            slideWrapper.style.display = 'none';
+          }
+          stopAutoSlide();
+        }
+      }
+
+
+      // --- KHỞI TẠO BAN ĐẦU ---
+      images.forEach((src, i) => {
+        const img = new Image();
+        img.src = src;
+        img.alt = `Đám cưới Bò và Mun - Ảnh ${i + 1}`;
+
+        if (slideshow) {
+          const imgElement = document.createElement('img');
+          imgElement.src = src;
+          imgElement.alt = `Đám cưới Bò và Mun - Ảnh ${i + 1}`;
+          imgElement.classList.add('slide-image');
+          imgElement.style.width = `${initialBodyWidth}px`;
+          slideshow.appendChild(imgElement);
+        }
+      });
+
+      window.addEventListener('resize', updateSlideshowWidth);
+      showPage('slidePage');
+
+
+      // --- Event listeners cho việc vuốt ảnh (Touch Events - cho màn hình cảm ứng) ---
+      if (slideWrapper && totalImages > 1) {
+        slideWrapper.addEventListener('touchstart', (e) => {
+          if (!document.getElementById('slidePage').classList.contains('active')) return;
+
+          startX = e.touches[0].clientX;
+          slideshow.style.transition = 'none'; // Tắt transition để kéo mượt mà
+          initialTranslateX = -currentIndex * slideWrapper.offsetWidth; // Ghi lại vị trí ban đầu
+          stopAutoSlide();
+          playMusic();
+          clearTimeout(interactionTimer);
+        });
+
+        slideWrapper.addEventListener('touchmove', (e) => {
+          if (!document.getElementById('slidePage').classList.contains('active')) return;
+
+          const currentX = e.touches[0].clientX;
+          const deltaX = currentX - startX;
+
+          // Yêu cầu frame animation để cập nhật transform
+          pendingTransform = `translateX(${initialTranslateX + deltaX}px)`;
+          if (animationFrameId === null) {
+            animationFrameId = requestAnimationFrame(animateSlideshowTransform);
+          }
+
+          // Ngăn cuộn dọc nếu đang vuốt ngang đáng kể
+          if (Math.abs(deltaX) > Math.abs(e.touches[0].clientY - e.targetTouches[0].clientY)) {
+            e.preventDefault();
+          }
+        }, {
+          passive: false
+        });
+
+        slideWrapper.addEventListener('touchend', (e) => {
+          if (!document.getElementById('slidePage').classList.contains('active')) return;
+
+          // Hủy bỏ animation frame nếu có (đảm bảo không có animation đang chờ)
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+          pendingTransform = null;
+
+          slideshow.style.transition = 'transform 0.5s ease-in-out'; // Bật lại transition
+
+          const endX = e.changedTouches[0].clientX;
+          const finalDiff = startX - endX;
+
+          if (finalDiff > swipeThreshold) {
+            changeSlide(1);
+          } else if (finalDiff < -swipeThreshold) {
+            changeSlide(-1);
+          } else {
+            slideshow.style.transform = `translateX(-${currentIndex * slideWrapper.offsetWidth}px)`;
+          }
+
+          resetInteractionTimer();
+        });
+      }
+
+
+      // --- Event listeners cho việc kéo ảnh (Mouse Events - cho máy tính) ---
+      if (slideWrapper && totalImages > 1) {
+        slideWrapper.addEventListener('mousedown', (e) => {
+          if (e.button !== 0 || !document.getElementById('slidePage').classList.contains('active')) return;
+
+          isDragging = true;
+          startX = e.clientX;
+          slideshow.style.transition = 'none'; // Tắt transition để kéo mượt mà
+          initialTranslateX = -currentIndex * slideWrapper.offsetWidth;
+
+          stopAutoSlide();
+          playMusic();
+          clearTimeout(interactionTimer);
+
+          e.preventDefault(); // Ngăn chọn văn bản khi kéo chuột
+        });
+
+        document.addEventListener('mousemove', (e) => {
+          if (!isDragging || !document.getElementById('slidePage').classList.contains('active')) return;
+
+          const currentX = e.clientX;
+          const deltaX = currentX - startX;
+
+          // Yêu cầu frame animation để cập nhật transform
+          pendingTransform = `translateX(${initialTranslateX + deltaX}px)`;
+          if (animationFrameId === null) {
+            animationFrameId = requestAnimationFrame(animateSlideshowTransform);
+          }
+
+          e.preventDefault(); // Ngăn chọn văn bản
+        });
+
+        document.addEventListener('mouseup', (e) => {
+          if (!isDragging) return;
+          isDragging = false;
+
+          // Hủy bỏ animation frame nếu có
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+          pendingTransform = null;
+
+          slideshow.style.transition = 'transform 0.5s ease-in-out'; // Bật lại transition
+
+          const endX = e.clientX;
+          const finalDiff = startX - endX;
+
+          if (finalDiff > swipeThreshold) {
+            changeSlide(1);
+          } else if (finalDiff < -swipeThreshold) {
+            changeSlide(-1);
+          } else {
+            slideshow.style.transform = `translateX(-${currentIndex * slideWrapper.offsetWidth}px)`;
+          }
+
+          resetInteractionTimer();
+        });
+
+        slideWrapper.addEventListener('mouseleave', (e) => {
+          if (isDragging) {
+            // Kích hoạt mouseup để xử lý chuyển slide
+            const mouseUpEvent = new MouseEvent('mouseup', {
+              bubbles: true,
+              cancelable: true,
+              clientX: e.clientX,
+              clientY: e.clientY
+            });
+            document.dispatchEvent(mouseUpEvent);
+          }
+        });
+      }
+
+
+      if (heartIconDiv && heartCountSpan) {
+        heartIconDiv.addEventListener("click", () => {
+          const icon = heartIconDiv.querySelector("i");
+          const isLiked = icon.classList.contains("liked");
+          let currentCountText = heartCountSpan.textContent;
+          let currentCount;
+
+          if (currentCountText.endsWith('K')) {
+            currentCount = parseFloat(currentCountText.replace('K', '')) * 1000;
+          } else {
+            currentCount = parseInt(currentCountText, 10);
+          }
+
+          if (isLiked) {
+            icon.classList.remove("liked");
+            currentCount = Math.max(0, currentCount - 1);
+          } else {
+            icon.classList.add("liked");
+            currentCount += 1;
+          }
+
+          if (currentCount >= 1000) {
+            let formattedCount = (currentCount / 1000).toFixed(1);
+            if (formattedCount.endsWith('.0')) {
+              formattedCount = formattedCount.substring(0, formattedCount.length - 2);
+            }
+            heartCountSpan.textContent = formattedCount + 'K';
+          } else {
+            heartCountSpan.textContent = currentCount.toString();
+          }
+        });
+      }
+
+      navItems.forEach(item => {
+        item.addEventListener('click', function (e) {
+          if (this.id === 'profileNavItem') {
+            e.preventDefault();
+            return;
+          }
+
+          const currentActive = document.querySelector('.bottom-nav-item.active-nav');
+          if (currentActive) {
+            currentActive.classList.remove('active-nav');
+          }
+          this.classList.add('active-nav');
+
+          const targetPageId = this.getAttribute('data-page');
+          if (targetPageId) {
+            showPage(targetPageId);
+          }
+        });
+      });
+
+      if (homeNavItem) {
+        homeNavItem.addEventListener('click', function () {
+          showPage('slidePage');
+        });
+      }
+      if (qrNavItem) {
+        qrNavItem.addEventListener('click', function () {
+          showPage('qrPage');
+        });
+      }
+      if (storyNavItem) {
+        storyNavItem.addEventListener('click', function () {
+          showPage('storyPage');
+        });
+      }
+      if (searchNavItem) {
+        searchNavItem.addEventListener('click', function () {
+          showPage('searchPage');
+        });
+      }
+
+
+      if (profileNavItem) {
+        profileNavItem.addEventListener('click', function () {
+          window.location.href = 'profile.html';
+        });
+      }
+
+      if (navItems.length > 0 && homeNavItem) {
+        homeNavItem.classList.add('active-nav');
+      }
+    });
   </script>
 </body>
 
